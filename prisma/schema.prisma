@@ -1,0 +1,45 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  favorites Favorite[]
+}
+
+model College {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  location    String
+  overview    String   @db.Text
+  courses     String[] // String array for clean multi-course management
+  fees        Int      // Represented in annual cost
+  placement   Float    // In LPA (Lakhs Per Annum)
+  rating      Float    // Scale 1-5
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  favoritedBy Favorite[]
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  collegeId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, collegeId]) // Prevents duplicate favoriting
+}
