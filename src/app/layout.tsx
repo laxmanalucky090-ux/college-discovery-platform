@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
 import Navbar from '@/components/layout/Navbar';
 import './globals.css';
 
@@ -19,7 +18,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-gray-50 text-gray-900 antialiased min-h-screen flex flex-col`}>
-        <Providers>
           <Navbar />
           <main className="flex-grow container mx-auto px-4 py-8 max-w-7xl">
             {children}
@@ -27,7 +25,6 @@ export default function RootLayout({
           <footer className="border-t bg-white py-6 text-center text-sm text-gray-500">
             © 2026 College Discovery Platform. All rights reserved.
           </footer>
-        </Providers>
       </body>
     </html>
   );
